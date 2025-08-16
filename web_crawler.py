@@ -2,22 +2,27 @@ import html.parser
 import urllib.request
 import sys
 
-# Crawler has a state, it keeps history of previously found urls.
+# Crawler has a state, it keeps tabs on previously found and crawled urls.
 # url_extractor and html_provider should be stateless
 class Crawler():
 	def __init__(self, url_extractor, html_provider):
-		self.found_urls = set()
 		self.url_extractor = url_extractor
 		self.html_provider = html_provider
 
+		# The unique urls that were visited on depth > 0
+		self.crawled_urls = set()
+		# The unique urls that were visited on any depth
+		self.found_urls = set()
+
 	def crawl(self, url, max_depth):
-		if url in self.found_urls:
+		if url in self.crawled_urls:
 			return
 		self.found_urls.add(url)
 
 		if max_depth == 0:
 			return
 		max_depth -= 1
+		self.crawled_urls.add(url)
 			
 		html = self.html_provider.fetch_html(url)
 		urls_in_html = self.url_extractor.extract_urls(html)
