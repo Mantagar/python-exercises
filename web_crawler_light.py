@@ -15,7 +15,7 @@ class WebHtmlProvider():
     return content  
 
 class Crawler:
-  LINK_PATTERN = re.compile("https?://[\\w\\-/.]+")
+  LINK_PATTERN = re.compile("https?://[\\w\\-/.]+/")
   
   def __init__(self, html_provider):
     self.html_provider = html_provider
